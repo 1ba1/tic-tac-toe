@@ -1,24 +1,26 @@
-const Player = (name, marker) => {
-  return { name, marker };
-};
-
-let playerOne;
-let playerTwo;
-let gameMode;
-const aiPlayer = Player("Computer", "O");
+let playerOne, playerTwo, gameMode, originalBoard;
 
 const cells = document.querySelectorAll(".cell");
+
 const menu = document.getElementById("menu");
 
 menu.onclick = () => {
-  // game.start();
-  // button.innerText = "Reset";
-  // playerOneScore = 0;
-  // playerTwoScore = 0;
-  // aiScore = 0;
-  // document.getElementById("pOneScore").innerText = playerOneScore;
-  // document.getElementById("pTwoScore").innerText = playerTwoScore;
-  // document.getElementById("aiScore").innerText = aiScore;
+  document.querySelector(".modal").style.display = "block";
+  document.querySelector(".modal-content-2-cpu").style.display = "none";
+  document.querySelector(".modal-content-2-p2").style.display = "none";
+  playerOneScore = 0;
+  playerTwoScore = 0;
+  aiScore = 0;
+  document.getElementById("pOneScore").innerText = playerOneScore;
+  document.getElementById("pTwoScore").innerText = playerTwoScore;
+  document.getElementById("aiScore").innerText = aiScore;
+};
+
+const back = document.querySelector(".back");
+
+back.onclick = () => {
+  document.querySelector(".modal-content-2-cpu").style.display = "none";
+  document.querySelector(".modal-content-2-p2").style.display = "none";
 };
 
 const cpuButton = document.getElementById("cpu");
@@ -30,22 +32,46 @@ cpuButton.onclick = () => {
 
 startCpu.onclick = e => {
   e.preventDefault();
-  const modals = (document.querySelector(".modal").style.display = "none");
-  const name = document.querySelector('.modal-content-2-cpu [name="p1"]').value;
-  console.log(name);
+  document.querySelector(".modal").style.display = "none";
+  const form = document.querySelector(".modal-content-2-cpu form");
+  const name = form.p1.value;
   playerOne = Player(name, "X");
   document.querySelector(".pOne p").innerText = playerOne.name;
   gameMode = "CPU";
+  form.p1.value = "";
+  game.start();
+};
+
+const twoPlayersButton = document.getElementById("twoP");
+const start2P = document.getElementById("start2P");
+
+twoPlayersButton.onclick = () => {
+  document.querySelector(".modal-content-2-p2").style.display = "flex";
+};
+
+start2P.onclick = e => {
+  e.preventDefault();
+  document.querySelector(".modal").style.display = "none";
+  const form = document.querySelector(".modal-content-2-p2form");
+  const name = form.p1.value;
+  playerOne = Player(name, "X");
+  const name2 = form.p2.value;
+  playerTwo = Player(name2, "O");
+  document.querySelector(".pOne p").innerText = playerOne.name;
+  document.querySelector(".pTwo p").innerText = playerTwo.name;
+  gameMode = "P1vsP2";
+  form.p1.value = "";
+  form.p2.value = "";
   game.start();
 };
 
 const game = (() => {
-  let originalBoard,
-    isWon = null,
+  let isWon = null,
     activeTurn = 0,
     playerOneScore = 0,
     playerTwoScore = 0,
-    aiScore = 0;
+    aiScore = 0,
+    players;
 
   const winCombos = [
     [0, 1, 2],
@@ -66,17 +92,20 @@ const game = (() => {
       cell.addEventListener("click", turnClick, false);
       cell.style.color = "black";
     });
-    const players =
-      gameMode === "CPU" ? [playerOne, aiPlayer] : [playerOne, playerTwo];
+
     const pTwo = document.querySelector("div.pTwo");
     const ai = document.querySelector("div.ai");
+
     if (gameMode === "CPU") {
       pTwo.style.display = "none";
       ai.style.display = "block";
+      players = [playerOne, aiPlayer];
     } else {
       pTwo.style.display = "block";
       ai.style.display = "none";
+      players = [playerOne, playerTwo];
     }
+
     document.querySelector(".whoseTurn").innerText = `${
       players[activeTurn].name
     }'s turn`;
@@ -87,31 +116,29 @@ const game = (() => {
   };
 
   const turnClick = cell => {
-    if (gameMode === "CPU") {
-      if (typeof originalBoard[cell.target.id] === "number") {
-        turn(cell.target.id, playerOne.marker);
-        if (!checkForTieGame() && isWon === null) {
-          setTimeout(() => {
-            turn(bestSpot(), aiPlayer.marker);
-          }, 300);
-        }
-      }
-    } else {
-      if (typeof originalBoard[cell.target.id] === "number") {
-        turn(cell.target.id, players[activeTurn].marker);
+    if (
+      isWon === null &&
+      !checkForTieGame() &&
+      typeof originalBoard[cell.target.id] === "number"
+    ) {
+      if (gameMode === "CPU") {
+        turn(bestSpot(), aiPlayer.marker);
+      } else {
+        players[activeTurn].placeMarker(cell.target.id);
+        isWon = checkForWinner(originalBoard, players[activeTurn].marker);
+        togglePlayer();
+        document.querySelector(".whoseTurn").innerText = `${
+          players[activeTurn].name
+        }'s turn`;
       }
     }
+    if (isWon) gameOver(isWon);
   };
 
   const turn = (cellId, player) => {
+    // only for AI
     originalBoard[cellId] = player;
     document.getElementById(cellId).innerText = player;
-    if (gameMode !== "CPU") {
-      togglePlayer();
-      document.querySelector(".whoseTurn").innerText = `${
-        players[activeTurn].name
-      }'s turn`;
-    }
     isWon = checkForWinner(originalBoard, player);
     if (isWon) gameOver(isWon);
     checkForTieGame();
@@ -238,5 +265,16 @@ const game = (() => {
     return moves[bestMove];
   };
 
-  return { start };
+  return { start, bestSpot };
 })();
+
+const Player = (name, marker) => {
+  const placeMarker = cell => {
+    console.log(name);
+    originalBoard[cell] = marker;
+    document.getElementById(cell).innerText = marker;
+  };
+  return { name, marker, placeMarker };
+};
+
+const aiPlayer = Player("Computer", "O");

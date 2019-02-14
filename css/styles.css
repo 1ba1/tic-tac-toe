@@ -11,7 +11,7 @@ body {
 }
 
 .modal {
-  background-color: #fff;
+  background-color: #000;
   position: absolute;
   top: 0;
   left: 0;
@@ -21,7 +21,7 @@ body {
 }
 
 .modal-content {
-  border: 1px solid #000;
+  background-color: #fff;
   display: flex;
   flex-direction: column;
   justify-content: space-around;
@@ -42,6 +42,7 @@ body {
 
 #cpu:hover, #twoP:hover {
   background-color: #000;
+  border: 1px solid #fff;
   color: #fff;
 }
 
@@ -58,6 +59,23 @@ body {
   width: 50%;
   height: 50%;
   z-index: 2;
+}
+
+.back {
+  font-size: 22px;
+  position: absolute;
+  top: 0;
+  left: 0;
+  margin: 0;
+}
+
+form input {
+  margin-top: 20px;
+}
+
+form button {
+  display: block;
+  margin: 20px auto;
 }
 
 .score-container {
