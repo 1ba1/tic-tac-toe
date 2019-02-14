@@ -52,7 +52,7 @@ twoPlayersButton.onclick = () => {
 start2P.onclick = e => {
   e.preventDefault();
   document.querySelector(".modal").style.display = "none";
-  const form = document.querySelector(".modal-content-2-p2form");
+  const form = document.querySelector(".modal-content-2-p2 form");
   const name = form.p1.value;
   playerOne = Player(name, "X");
   const name2 = form.p2.value;
@@ -87,6 +87,7 @@ const game = (() => {
   const start = () => {
     document.querySelector(".endgame").style.display = "none";
     originalBoard = Array.from(Array(9).keys());
+    
     [...cells].forEach(cell => {
       cell.innerText = "";
       cell.addEventListener("click", turnClick, false);
@@ -99,7 +100,6 @@ const game = (() => {
     if (gameMode === "CPU") {
       pTwo.style.display = "none";
       ai.style.display = "block";
-      players = [playerOne, aiPlayer];
     } else {
       pTwo.style.display = "block";
       ai.style.display = "none";
@@ -116,27 +116,30 @@ const game = (() => {
   };
 
   const turnClick = cell => {
-    if (
-      isWon === null &&
-      !checkForTieGame() &&
-      typeof originalBoard[cell.target.id] === "number"
-    ) {
+    if (typeof originalBoard[cell.target.id] === "number") {
       if (gameMode === "CPU") {
-        turn(bestSpot(), aiPlayer.marker);
+        turn(cell.target.id, playerOne.marker);
+        if (isWon === null && !checkForTieGame()) {
+          setTimeout(() => {
+            turn(bestSpot(), aiPlayer.marker);
+          }, 100);
+        }
       } else {
         players[activeTurn].placeMarker(cell.target.id);
         isWon = checkForWinner(originalBoard, players[activeTurn].marker);
-        togglePlayer();
-        document.querySelector(".whoseTurn").innerText = `${
-          players[activeTurn].name
-        }'s turn`;
+        if (isWon) gameOver(isWon);
+        if (isWon === null && !checkForTieGame()) {
+          togglePlayer();
+          document.querySelector(".whoseTurn").innerText = `${
+            players[activeTurn].name
+          }'s turn`;
+        }
       }
     }
-    if (isWon) gameOver(isWon);
   };
 
+  // only for CPU game mode
   const turn = (cellId, player) => {
-    // only for AI
     originalBoard[cellId] = player;
     document.getElementById(cellId).innerText = player;
     isWon = checkForWinner(originalBoard, player);
@@ -270,7 +273,6 @@ const game = (() => {
 
 const Player = (name, marker) => {
   const placeMarker = cell => {
-    console.log(name);
     originalBoard[cell] = marker;
     document.getElementById(cell).innerText = marker;
   };
