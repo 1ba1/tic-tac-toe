@@ -120,6 +120,7 @@ form input {
   border: 2px solid #000;
   border-radius: 10px;
   outline: 0;
+  width: 200px;
 }
 
 form input[name="p2"] {
@@ -268,6 +269,7 @@ td {
   }
 
   td {
+    font-size: 40px;
     height: 80px;
     width: 80px;
   }
