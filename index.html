@@ -2,12 +2,21 @@
 <html lang="en" dir="ltr">
   <head>
     <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+    />
     <title>Tic Tac Toe</title>
     <link rel="stylesheet" href="css/styles.css" />
+    <link
+      href="https://fonts.googleapis.com/css?family=Audiowide"
+      rel="stylesheet"
+    />
   </head>
   <body>
     <div id="wrapper">
       <div class="modal">
+        <h1>tic tac toe</h1>
         <div class="modal-content">
           <div id="cpu">P1 vs CPU</div>
           <div id="twoP">P1 vs P2</div>
@@ -15,8 +24,8 @@
             <form>
               <button class="back">&#x1F519;</button>
               <label>
-                Enter P1's name (X) <input type="text" name="p1" />
-              </label><br>
+                Enter P1's name (X) <input type="text" name="p1" /> </label
+              ><br />
               <label>
                 Enter P2's name (O) <input type="text" name="p2" />
               </label>
@@ -26,9 +35,7 @@
           <div class="modal-content-2-cpu">
             <form>
               <button class="back">&#x1F519;</button>
-              <label>
-                Enter P1's name <input type="text" name="p1" />
-              </label>
+              <label> Enter P1's name (X) <input type="text" name="p1" /> </label>
               <button id="startCpu">Start</button>
             </form>
           </div>
@@ -37,10 +44,10 @@
       <div id="container">
         <div class="score-container">
           <div class="pOne">
-            <p>Tino</p>
+            <p></p>
             <p>Score <span id="pOneScore">0</span></p>
           </div>
-          <button id="menu">Menu</button>
+          <button id="menu">&#9776;</button>
           <div class="pTwo">
             <p></p>
             <p>Score <span id="pTwoScore">0</span></p>
@@ -67,7 +74,6 @@
             <td class="cell" id="8"></td>
           </tr>
         </table>
-
         <div class="endgame"><div class="text"></div></div>
         <div class="whoseTurn"></div>
       </div>

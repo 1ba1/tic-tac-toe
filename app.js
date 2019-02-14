@@ -87,7 +87,7 @@ const game = (() => {
   const start = () => {
     document.querySelector(".endgame").style.display = "none";
     originalBoard = Array.from(Array(9).keys());
-    
+
     [...cells].forEach(cell => {
       cell.innerText = "";
       cell.addEventListener("click", turnClick, false);
@@ -101,14 +101,13 @@ const game = (() => {
       pTwo.style.display = "none";
       ai.style.display = "block";
     } else {
-      pTwo.style.display = "block";
       ai.style.display = "none";
+      pTwo.style.display = "block";
       players = [playerOne, playerTwo];
+      document.querySelector(".whoseTurn").innerText = `${
+        players[activeTurn].name
+      }'s turn`;
     }
-
-    document.querySelector(".whoseTurn").innerText = `${
-      players[activeTurn].name
-    }'s turn`;
   };
 
   const togglePlayer = () => {
@@ -173,7 +172,7 @@ const game = (() => {
   const checkForTieGame = () => {
     if (emptyCells().length === 0 && isWon === null) {
       [...cells].forEach(cell => {
-        cell.style.color = "green";
+        cell.style.color = "#1e0";
         cell.removeEventListener("click", turnClick, false);
       });
       declareWinner("Tie Game!");
