@@ -68,12 +68,15 @@ body {
 }
 
 .score-container > div {
-  width: 100px;
+  text-align: center;
+  background: red;
+  width: 30%;
+  /* width: 100px;
   height: 60px;
-  display: flex;
+  /* display: flex;
   justify-content: space-around;
   align-items: center;
-  flex-wrap: wrap;
+  flex-wrap: wrap; */
 }
 
 .score-container div.pTwo {
@@ -118,7 +121,7 @@ td {
 .endgame {
   display: none;
   width: 200px;
-  top: 420px;
+  top: 460px;
   position: absolute;
   left: 50%;
   margin-left: -100px;

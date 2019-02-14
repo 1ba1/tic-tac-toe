@@ -32,9 +32,6 @@ startCpu.onclick = e => {
   e.preventDefault();
   const modals = (document.querySelector(".modal").style.display = "none");
   const name = document.querySelector('.modal-content-2-cpu [name="p1"]').value;
-  if (name.length < 6) {
-    document.querySelector(".pOne p").style.marginLeft = "10px";
-  }
   console.log(name);
   playerOne = Player(name, "X");
   document.querySelector(".pOne p").innerText = playerOne.name;
@@ -75,9 +72,9 @@ const game = (() => {
     const ai = document.querySelector("div.ai");
     if (gameMode === "CPU") {
       pTwo.style.display = "none";
-      ai.style.display = "inherit";
+      ai.style.display = "block";
     } else {
-      pTwo.style.display = "inherit";
+      pTwo.style.display = "block";
       ai.style.display = "none";
     }
     document.querySelector(".whoseTurn").innerText = `${
